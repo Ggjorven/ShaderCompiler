@@ -11,6 +11,8 @@ project "ShaderCompiler"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+	warnings "Off"
+
 	files
 	{
 		"src/**.h",
@@ -30,11 +32,22 @@ project "ShaderCompiler"
 		"include/glslangSPIRV/**.hpp",
 		"include/glslangSPIRV/**.cpp",
 		"include/glslangSPIRV/**.cc",
+
+		-- "src/spirv-tools/spirv_optimizer_options.cpp",
+		-- "src/spirv-tools/spirv_validator_options.cpp",
+		-- "src/spirv-tools/spirv_fuzzer_options.cpp",
+		-- "src/spirv-tools/spirv_reducer_options.cpp",
 	}
 
 	removefiles
 	{
-		"include/glslang/OSDependent/**"
+		"include/glslang/OSDependent/**",
+
+		"src/spirv-tools/fuzz/**",
+		-- "src/spirv-tools/val/**",
+		-- "src/spirv-tools/opt/**",
+		"src/spirv-tools/reduce/**",
+		"src/spirv-tools/wasm/**",
 	}
 
 	defines
@@ -102,13 +115,16 @@ project "ShaderCompiler"
 		}
 
 	filter "configurations:Debug"
+		defines "NDEBUG"
 		runtime "Debug"
 		symbols "on"
-
+	
 	filter "configurations:Release"
+		defines "NDEBUG"
 		runtime "Release"
 		optimize "on"
-
+		
 	filter "configurations:Dist"
+		defines "NDEBUG"
 		runtime "Release"
 		optimize "Full"
