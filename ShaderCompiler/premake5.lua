@@ -18,11 +18,30 @@ project "ShaderCompiler"
 		"src/**.inl",
 		"src/**.cpp",
 		"src/**.cc",
+
+		"include/glslang/**.c",
+		"include/glslang/**.h",
+		"include/glslang/**.hpp",
+		"include/glslang/**.cpp",
+		"include/glslang/**.cc",
+
+		"include/glslangSPIRV/**.c",
+		"include/glslangSPIRV/**.h",
+		"include/glslangSPIRV/**.hpp",
+		"include/glslangSPIRV/**.cpp",
+		"include/glslangSPIRV/**.cc",
+	}
+
+	removefiles
+	{
+		"include/glslang/OSDependent/**"
 	}
 
 	defines
 	{
-		"ENABLE_HLSL"
+		"ENABLE_HLSL",
+
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
@@ -32,16 +51,46 @@ project "ShaderCompiler"
 	}
 
 	filter "system:windows"
+		defines "SPIRV_WINDOWS"
 		systemversion "latest"
 		staticruntime "on"
-
+		
+		files
+		{
+			"include/glslang/OSDependent/Windows/**.c",
+			"include/glslang/OSDependent/Windows/**.h",
+			"include/glslang/OSDependent/Windows/**.hpp",
+			"include/glslang/OSDependent/Windows/**.cpp",
+			"include/glslang/OSDependent/Windows/**.cc",
+		}
+		
 	filter "system:linux"
+		defines "SPIRV_UNIX" -- TODO: Check if works
 		systemversion "latest"
 		staticruntime "on"
-
-    filter "system:macosx"
+		
+		files
+		{
+			"include/glslang/OSDependent/Unix/**.c",
+			"include/glslang/OSDependent/Unix/**.h",
+			"include/glslang/OSDependent/Unix/**.hpp",
+			"include/glslang/OSDependent/Unix/**.cpp",
+			"include/glslang/OSDependent/Unix/**.cc",
+		}
+		
+	filter "system:macosx"
+		defines "SPIRV_UNIX" -- TODO: Check if works
 		systemversion(MacOSVersion)
 		staticruntime "on"
+
+		files
+		{
+			"include/glslang/OSDependent/Unix/**.c",
+			"include/glslang/OSDependent/Unix/**.h",
+			"include/glslang/OSDependent/Unix/**.hpp",
+			"include/glslang/OSDependent/Unix/**.cpp",
+			"include/glslang/OSDependent/Unix/**.cc",
+		}
 
 	filter "action:xcode*"
 		-- Note: If we don't add the header files to the externalincludedirs
