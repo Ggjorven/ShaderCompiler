@@ -16,7 +16,8 @@ project "ShaderCompiler"
 		"src/**.h",
 		"src/**.hpp",
 		"src/**.inl",
-		"src/**.cpp"
+		"src/**.cpp",
+		"src/**.cc",
 	}
 
 	defines
